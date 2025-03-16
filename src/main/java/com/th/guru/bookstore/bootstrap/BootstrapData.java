@@ -28,10 +28,10 @@ public class BootstrapData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        bookService.saveByGoogleApis("q=isbn:9781457501197");
-        bookService.saveByGoogleApis("q=isbn:9780201633610");
-        bookService.saveByGoogleApis("q=isbn:9780132350884");
-        bookService.saveByGoogleApis("q=isbn:9780321834577");
+//        bookService.saveByGoogleApis("q=isbn:9781457501197");
+//        bookService.saveByGoogleApis("q=isbn:9780201633610");
+//        bookService.saveByGoogleApis("q=isbn:9780132350884");
+//        bookService.saveByGoogleApis("q=isbn:9780321834577");
 
         var books = bookService.findAll();
 

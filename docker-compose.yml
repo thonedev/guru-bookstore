@@ -1,7 +1,5 @@
-version: '3.8'
-
 services:
-  springboot:
+  guru_bookstore:
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,20 +8,29 @@ services:
       - '8080:8080'
       - '5005:5005'
     environment:
+      PGHOST: db
+      PGPORT: 5432
+      PGDATABASE: guru_bookstore_db
+      PGUSER: postgres
+      PGPASSWORD: My1SecretPass
       ADDITIONAL_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m"
-      PROFILE: "dev"
+      PROFILE: "prod"
+      SPRING_PROFILES_ACTIVE: "prod"
     depends_on:
       - db
 
   db:
-    container_name: bdpostgres
+    container_name: guru_bookstore_db
     image: postgres:16
     restart: always
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: main
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: My1SecretPass
+      POSTGRES_DB: guru_bookstore_db
     volumes:
-      - ./docker/volume_postgres:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

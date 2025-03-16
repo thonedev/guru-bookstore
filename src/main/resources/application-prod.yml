@@ -1,0 +1,14 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGDATABASE:guru_bookstore_db}
+    username: ${PGUSER:postgres}
+    password: ${PGPASSWORD:My1SecretPass}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
