@@ -57,7 +57,7 @@ jobs:
 
     - name: Create Git Tag
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Usar o token padrão do GitHub
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
       run: |
         git config user.name "gh_actions"
         git config user.email "gh_actions@users.noreply.github.com"
