@@ -56,8 +56,11 @@ jobs:
           ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:latest
 
     - name: Create Git Tag
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
       run: |
-        git config user.name "${{ github.actor }}"
-        git config user.email "${{ github.actor }}@users.noreply.github.com"
+        git config user.name "gh_actions"
+        git config user.email "gh_actions@users.noreply.github.com"
         git tag ${{ steps.version.outputs.version }}
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
         git push origin ${{ steps.version.outputs.version }}
