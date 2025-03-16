@@ -29,6 +29,17 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
+    - name: Extract version from Git tags
+      id: version
+      run: |
+       # Get the latest tag, increment it, or start with 1.0.0
+       latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "0.0.0")
+       IFS='.' read -r major minor patch <<< "${latest_tag}"
+       patch=${{ github.run_number }}
+       new_tag="$major.$minor.$patch"
+       echo "version=$new_tag"
+       echo "::set-output name=version::$new_tag"
+
     - name: Log in to DockerHub
       uses: docker/login-action@v3
       with:
@@ -36,24 +47,22 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Build and Push Docker Images
-      env:
-        TAG_VERSION: ${{ github.run_number}}
+      id: push_docker
       uses: docker/build-push-action@v5
       with:
         context: .
         push: true
         tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:0.0.${{ TAG_VERSION }}
+          ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${{ steps.version.outputs.version }}
           ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:latest
 
     - name: Create Git Tag
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG_VERSION: ${{ github.run_number}}
       run: |
         REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
         git config user.name "gh_actions"
         git config user.email "gh_actions@users.noreply.github.com"
         git tag 0.0.$TAG_VERSION
         git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$REPO_NAME.git
-        git push origin 0.0.${{ TAG_VERSION }}
+        git push origin ${{ steps.version.outputs.version }}
