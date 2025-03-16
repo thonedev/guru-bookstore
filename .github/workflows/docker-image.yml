@@ -63,6 +63,6 @@ jobs:
         REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
         git config user.name "gh_actions"
         git config user.email "gh_actions@users.noreply.github.com"
-        git tag 0.0.$TAG_VERSION
+        git tag v${{ steps.version.outputs.version }}
         git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$REPO_NAME.git
-        git push origin ${{ steps.version.outputs.version }}
+        git push origin v${{ steps.version.outputs.version }}
