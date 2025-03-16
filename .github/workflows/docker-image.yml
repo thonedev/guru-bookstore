@@ -52,6 +52,9 @@ jobs:
       with:
         context: .
         push: true
+        build-args: |
+          PROFILE=prod
+          ADDITIONAL_OPTS=-Xmx512m
         tags: |
           ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${{ steps.version.outputs.version }}
           ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:latest
