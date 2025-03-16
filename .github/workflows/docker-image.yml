@@ -43,7 +43,7 @@ jobs:
         context: .
         push: true
         tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:0.0.$TAG_VERSION
+          ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:0.0.${{ TAG_VERSION }}
           ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:latest
 
     - name: Create Git Tag
@@ -56,4 +56,4 @@ jobs:
         git config user.email "gh_actions@users.noreply.github.com"
         git tag 0.0.$TAG_VERSION
         git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$REPO_NAME.git
-        git push origin 0.$TAG_VERSION
+        git push origin 0.0.${{ TAG_VERSION }}
