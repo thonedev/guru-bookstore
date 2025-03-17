@@ -1,7 +1,7 @@
 FROM openjdk:21-jdk-slim AS builder
 WORKDIR /app
 COPY . .
-RUN ./gradlew clean build -x test
+RUN chmod +x ./gradlew && ./gradlew clean build -x test
 
 FROM eclipse-temurin:21-jre
 WORKDIR /opt/springboot
