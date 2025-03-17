@@ -33,6 +33,12 @@ dependencies {
 
 }
 
+tasks.jar {
+	manifest {
+		attributes["Main-Class"] = "com.th.guru.bookstore.Application"
+	}
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
