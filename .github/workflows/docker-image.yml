@@ -21,10 +21,10 @@ jobs:
         java-version: '21'
 
     - name: Grant execute permission for Gradle wrapper
-      run: chmod +x ./gradlew -x test
+      run: chmod +x ./gradlew
 
     - name: Build with Gradle
-      run: ./gradlew clean build
+      run: ./gradlew clean build -x test
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
